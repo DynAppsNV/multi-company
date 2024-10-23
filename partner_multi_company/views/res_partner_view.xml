@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <xpath
-                expr="//field[@name='child_ids']//field[@name='company_id']"
+                expr="//field[@name='child_ids']//field[@name='mobile']"
                 position="after"
             >
                 <field
@@ -14,7 +14,7 @@
                     groups="base.group_multi_company"
                     widget="many2many_tags"
                     options="{'no_create': True}"
-                    attrs="{'readonly': [('parent_id', '!=', False)]}"
+                    readonly="parent_id != False"
                 />
             </xpath>
             <xpath
@@ -32,7 +32,7 @@
                     groups="base.group_multi_company"
                     widget="many2many_tags"
                     options="{'no_create': True}"
-                    attrs="{'readonly': [('parent_id', '!=', False)]}"
+                    readonly="parent_id != False"
                 />
             </xpath>
         </field>

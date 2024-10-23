@@ -2,7 +2,7 @@
 # Copyright 2015-2019 Pedro M. Baeza <pedro.baeza@tecnativa.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html.html
 
-from odoo import _, api, fields, models
+from odoo import Command, _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -37,9 +37,9 @@ class ResPartner(models.Model):
          parent/child...).
         :return: List of field names to be synced.
         """
-        fields = super()._commercial_fields()
-        fields += ["company_ids"]
-        return fields
+        commercial_fields = super()._commercial_fields()
+        commercial_fields += ["company_ids"]
+        return commercial_fields
 
     @api.model
     def _amend_company_id(self, vals):
@@ -48,11 +48,11 @@ class ResPartner(models.Model):
                 vals["company_id"] = False
             else:
                 for item in vals["company_ids"]:
-                    if item[0] in (1, 4):
+                    if item[0] in (Command.UPDATE, Command.LINK):
                         vals["company_id"] = item[1]
-                    elif item[0] in (2, 3, 5):
+                    elif item[0] in (Command.DELETE, Command.UNLINK, Command.CLEAR):
                         vals["company_id"] = False
-                    elif item[0] == 6:
+                    elif item[0] == Command.SET:
                         if item[2]:
                             vals["company_id"] = item[2][0]
                         else:  # pragma: no cover
@@ -86,7 +86,7 @@ class ResPartner(models.Model):
             for record in self:
                 company = record.company_id
                 if company:
-                    record.company_ids = [(4, company.id)]
+                    record.company_ids = [Command.link(company.id)]
             return
         else:
             return super()._inverse_company_id()
