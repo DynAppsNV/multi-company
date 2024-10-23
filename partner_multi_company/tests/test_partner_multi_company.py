@@ -10,7 +10,7 @@ from odoo.tests import common, tagged
 class TestPartnerMultiCompany(common.TransactionCase):
     @classmethod
     def setUpClass(cls):
-        super(TestPartnerMultiCompany, cls).setUpClass()
+        super().setUpClass()
         # Avoid possible spam
         cls.partner_model = cls.env["res.partner"].with_context(
             mail_create_nosubscribe=True,

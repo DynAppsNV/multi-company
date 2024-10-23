@@ -9,7 +9,7 @@ class ResUsers(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
-        res = super(ResUsers, self).create(vals)
+        res = super().create(vals)
         if "company_ids" in vals:
             res.partner_id.company_ids = vals["company_ids"]
         return res
