@@ -26,7 +26,7 @@ class Base(models.AbstractModel):
                 classes += self._get_company_dependent_css_class()
                 field.attrib["class"] = " ".join(set(classes))
 
-    def _get_company_dependent_css_class(self):
+    @staticmethod
+    def _get_company_dependent_css_class():
         """Inherit to apply your own class"""
-
         return ["fa", "fa-building-o", "d-flex", "flex-row"]
